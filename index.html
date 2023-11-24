@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to bottom, #000000, #333333);
+            /* Black gradient background */
+            color: white;
+            /* Text color */
+
+            height: 100vh;
+            /* Ensure the body takes up the full height of the viewport */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        h1{
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .form-container {
+            max-width: 400px;
+            height: 300px;
+            margin: 0 auto;
+            background-color: #333;
+            padding: 20px;
+            border-radius: 30px;
+            text-align: left;
+        }
+
+        input {
+            background-color: #585454;
+            color: white;
+            border-radius: 5px;
+            font-size: 20px;
+            width: 10em;
+            margin-left: 40px;
+        }
+
+        .error {
+            color: red;
+        }
+
+        .login-button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-left: 35%;
+        }
+    </style>
+    <title>Login Page</title>
+</head>
+
+<body>
+    <div class="form-container">
+        <h1>Login Page</h1><br><br>
+        <form id="login-form" onsubmit="return validateLogin()">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <span id="username-error" class="error"></span><br><br>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <span id="password-error" class="error"></span><br><br><br><br>
+
+            <button type="submit" class="login-button">Login</button>
+        </form>
+    </div>
+
+    <script>
+        function validateLogin() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            // Reset error messages
+            document.getElementById("username-error").textContent = "";
+            document.getElementById("password-error").textContent = "";
+
+            let valid = true;
+
+            if (username.trim() === "") {
+                document.getElementById("username-error").textContent = "Username is required";
+                valid = false;
+            }
+
+            if (password.trim() === "") {
+                document.getElementById("password-error").textContent = "Password is required";
+                valid = false;
+            }
+
+            if (valid) {
+                // For demonstration purposes, you can hash the password (client-side hashing)
+                const hashedPassword = sha256(password); // Example hashing function (SHA-256)
+                console.log("Username:", username);
+                console.log("Hashed Password:", hashedPassword);
+            }
+
+            return false; // Prevents form submission for the sake of this example
+        }
+
+        function sha256(message) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(message);
+            return crypto.subtle.digest('SHA-256', data).then(buffer => {
+                const hashArray = Array.from(new Uint8Array(buffer));
+                return hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+            });
+        }
+    </script>
+</body>
+
+</html>
